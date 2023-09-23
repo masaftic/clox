@@ -1,28 +1,12 @@
 {
-	"version": "2.0.0",
-	"tasks": [
+    "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: gcc.exe build active file",
-            "command": "C:\\MinGW\\bin\\gcc.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "compiler: C:\\MinGW\\bin\\gcc.exe"
+            "type": "shell",
+            "label": "run the makefile",
+            "command": "make",
+            "args": [],
+            "problemMatcher": [],
         }
-    ]
+    ],
+    "version": "2.0.0"
 }

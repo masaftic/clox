@@ -1,9 +1,13 @@
 {
     "files.associations": {
+        "*.cpp": "cpp",
         "*.c": "c",
         "memory.h": "c",
         "stdlib.h": "c",
         "common.h": "c",
-        "chunk.h": "c"
+        "chunk.h": "c",
+        "value.h": "c",
+        "stdio.h": "c",
+        "debug.h": "c"
     }
 }
