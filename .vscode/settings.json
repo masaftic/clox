@@ -11,6 +11,8 @@
         "debug.h": "c",
         "vm.h": "c",
         "typeinfo": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "string.h": "c",
+        "stdint.h": "c"
     }
 }
