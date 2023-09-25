@@ -9,7 +9,7 @@ int main(int argc, const char* argv[])
     Chunk chunk;
     initChuck(&chunk);
     
-    int constant = addConstant(&chunk, 42.1);
+    int constant = addConstant(&chunk, 420.69);
     writeChunk(&chunk, OP_CONSTANT, 123);
     writeChunk(&chunk, constant, 123);
 
@@ -19,5 +19,6 @@ int main(int argc, const char* argv[])
 
     freeChunk(&chunk);
     
+
     return 0;
 }

@@ -31,6 +31,7 @@ endif
 
 SEPS = $(OBJ:.o=,.o)
 
+# doesn't work on my powershell for some reason
 clean:
 	$(RM) $(OBJ) $(TARGET)$(EXE)
 # $(RM) $(OBJ) $(TARGET)$(EXE)

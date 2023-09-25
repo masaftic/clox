@@ -16,7 +16,7 @@ void freeValueArray(ValueArray *array)
     initValueArray(array);
 }
 
-void writeValueArray(ValueArray *array, uint8_t byte)
+void writeValueArray(ValueArray *array, Value value)
 {
     if (array->count + 1 > array->capacity) {
         int oldCapacity = array->capacity;
@@ -24,7 +24,7 @@ void writeValueArray(ValueArray *array, uint8_t byte)
         array->values = GROW_ARRAY(Value, array->values, oldCapacity, array->capacity);
     }
 
-    array->values[array->count] = byte;
+    array->values[array->count] = value;
     array->count++;
 }
 
