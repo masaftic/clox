@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -I./include -g
 
 # List your source files here
-SRC = src/main.c src/chunk.c src/memory.c src/value.c src/debug.c
+SRC = src/main.c src/chunk.c src/memory.c src/value.c src/debug.c src/vm.c
 
 # Generate object file names from source file names
 OBJ = $(SRC:.c=.o)

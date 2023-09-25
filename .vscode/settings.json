@@ -8,6 +8,9 @@
         "chunk.h": "c",
         "value.h": "c",
         "stdio.h": "c",
-        "debug.h": "c"
+        "debug.h": "c",
+        "vm.h": "c",
+        "typeinfo": "c",
+        "stddef.h": "c"
     }
 }
