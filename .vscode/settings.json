@@ -13,6 +13,9 @@
         "typeinfo": "c",
         "stddef.h": "c",
         "string.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "compiler.h": "c",
+        "stdbool.h": "c",
+        "scanner.h": "c"
     }
 }
