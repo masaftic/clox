@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "common.h"
 #include "chunk.h"
@@ -28,29 +29,46 @@ static char *readFile(const char *path)
 {
     FILE *file = fopen(path, "rb");
     if (file == NULL) {
-        fprintf(stderr, "Could not open file \"%s\".\n", path);
-        exit(74);
+        perror("Could not open file");
+        goto error;
     }
 
-    fseek(file, 0L, SEEK_END);
+    if (fseek(file, 0L, SEEK_END)) {
+        goto error;
+    }
     size_t fileSize = ftell(file);
+    if (fileSize < 0) {
+        goto error;
+    }
 
     char *buffer = (char*)malloc(fileSize + 1);
     if (buffer == NULL) {
         fprintf(stderr, "Not enough memory to read \"%s\".\n", path);
-        exit(74);
+        goto error;
+    }
+
+    if (fseek(file, 0, SEEK_SET) < 0) {
+        goto error;
     }
 
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
     if (bytesRead < fileSize) {
-        fprintf(stderr, "Could not read file \"%s\".\n", path);
-        exit(74);
+        fprintf(stderr, "Could not read file \"%s\". %s\n", path, strerror(errno));
+        goto error;
     }
 
     buffer[bytesRead] = '\0';
 
-    fclose(file);
     return buffer;
+
+error:
+    if (file) {
+        fclose(file);
+    }
+    if (buffer) {
+        free(buffer);
+    }
+    exit(1);
 }
 
 
@@ -65,11 +83,17 @@ static void runFile(const char *path)
     if (result == INTERPRET_RUNTIME_ERROR) exit(70);
 }
 
-
+// #define DEBUG
 
 int main(int argc, const char* argv[])
 {
     initVM();
+
+#ifdef DEBUG
+    const char *path = "cox.txt";
+    runFile(path);
+    return 0;
+#endif
     
     if (argc == 1) {
         repl();
