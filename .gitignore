@@ -2,3 +2,4 @@
 *.exe
 clox
 .vscode/launch.json
+clox.txt
