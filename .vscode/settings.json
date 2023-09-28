@@ -17,5 +17,6 @@
         "compiler.h": "c",
         "stdbool.h": "c",
         "scanner.h": "c"
-    }
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc-11"
 }

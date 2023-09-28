@@ -17,7 +17,7 @@ Scanner scanner;
 
 static bool isAtEnd() 
 {
-    return * scanner.current == '\0';
+    return *scanner.current == '\0';
 }
 
 static char advance() 
@@ -28,7 +28,7 @@ static char advance()
 
 static char peek() 
 {
-    return * scanner.current;
+    return *scanner.current;
 }
 
 static char peekNext() 
@@ -40,7 +40,7 @@ static char peekNext()
 static bool match(char expected) 
 {
     if (isAtEnd()) return false;
-    if ( * scanner.current != expected) return false;
+    if (*scanner.current != expected) return false;
     scanner.current++;
     return true;
 }
@@ -74,6 +74,10 @@ static void skipWhitespace()
         case '\r':
         case '\t':
             advance();
+            break;
+        case '\n':
+            advance();
+            scanner.line++;
             break;
         case '/':
             if (peekNext() == '/') {

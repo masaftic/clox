@@ -11,8 +11,7 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.22000.0",
-            "compilerPath": "cl.exe"
+            "windowsSdkVersion": "10.0.22000.0"
         }
     ],
     "version": 4

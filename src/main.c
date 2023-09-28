@@ -27,6 +27,7 @@ static void repl()
 
 static char *readFile(const char *path) 
 {
+    char *buffer = NULL;
     FILE *file = fopen(path, "rb");
     if (file == NULL) {
         perror("Could not open file");
@@ -36,12 +37,13 @@ static char *readFile(const char *path)
     if (fseek(file, 0L, SEEK_END)) {
         goto error;
     }
+
     size_t fileSize = ftell(file);
     if (fileSize < 0) {
         goto error;
     }
 
-    char *buffer = (char*)malloc(fileSize + 1);
+    buffer = (char*)malloc(fileSize + 1);
     if (buffer == NULL) {
         fprintf(stderr, "Not enough memory to read \"%s\".\n", path);
         goto error;
@@ -83,14 +85,13 @@ static void runFile(const char *path)
     if (result == INTERPRET_RUNTIME_ERROR) exit(70);
 }
 
-// #define DEBUG
 
 int main(int argc, const char* argv[])
 {
     initVM();
 
-#ifdef DEBUG
-    const char *path = "cox.txt";
+#ifdef DEBUG_LOCAL_DEBUGGER
+    const char *path = "/home/masaftic/dev/clox/clox.txt";
     runFile(path);
     return 0;
 #endif
