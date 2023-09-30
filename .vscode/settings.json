@@ -17,7 +17,9 @@
         "compiler.h": "c",
         "stdbool.h": "c",
         "scanner.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "compare": "c",
+        "object.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/gcc-11"
 }
