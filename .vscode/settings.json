@@ -19,7 +19,8 @@
         "scanner.h": "c",
         "type_traits": "c",
         "compare": "c",
-        "object.h": "c"
+        "object.h": "c",
+        "table.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/gcc-11"
 }
