@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -pedantic -I./include -ggdb
 SRC = src/main.c src/chunk.c src/memory.c src/value.c src/debug.c src/vm.c src/compiler.c src/scanner.c src/object.c src/table.c
 
 # Generate object file names from source file names
-OBJ = $(SRC:.c=.o)
+OBJ = $(patsubst src/%.c, build/%.o, $(SRC))
 
 # Name of the final executable
 TARGET = clox
@@ -16,9 +16,8 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Rule to compile each source file into an object file
-%.o: %.c
+build/%.o: src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
-
 
 # Determine the OS (Windows or Unix-like)
 ifeq ($(OS),Windows_NT)
@@ -31,7 +30,5 @@ endif
 
 SEPS = $(OBJ:.o=,.o)
 
-# doesn't work on my powershell for some reason
 clean:
 	$(RM) $(OBJ) $(TARGET)$(EXE)
-# $(RM) $(OBJ) $(TARGET)$(EXE)
