@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -I./include -g
+CFLAGS = -Wall -Wextra -pedantic -I./include -ggdb
 
 # List your source files here
 SRC = src/main.c src/chunk.c src/memory.c src/value.c src/debug.c src/vm.c src/compiler.c src/scanner.c src/object.c src/table.c

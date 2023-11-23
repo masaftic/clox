@@ -38,7 +38,7 @@ static char *readFile(const char *path)
         goto error;
     }
 
-    size_t fileSize = ftell(file);
+    int fileSize = ftell(file);
     if (fileSize < 0) {
         goto error;
     }
@@ -54,7 +54,7 @@ static char *readFile(const char *path)
     }
 
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
-    if (bytesRead < fileSize) {
+    if (bytesRead < (size_t) fileSize) {
         fprintf(stderr, "Could not read file \"%s\". %s\n", path, strerror(errno));
         goto error;
     }
