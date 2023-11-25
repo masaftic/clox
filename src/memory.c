@@ -16,7 +16,7 @@ void *reallocate(void *pointer, size_t oldSize, size_t newSize)
     return result;
 }
 
-static void freeObject(Obj *object)
+static void free_object(Obj *object)
 {
     switch (object->type)
     {
@@ -32,12 +32,12 @@ static void freeObject(Obj *object)
     }
 }
 
-void freeObjects()
+void free_objects()
 {
     Obj *object = vm.objects;
     while (object != NULL) {
         Obj *next = object->next;
-        freeObject(object);
+        free_object(object);
         object = next;
     }    
 }

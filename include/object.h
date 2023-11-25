@@ -28,10 +28,10 @@ struct ObjString {
 };
 
 
-ObjString *takeString(char *chars, int length);
-ObjString *copyString(const char *chars, int length);
+ObjString *take_string(char *chars, int length);
+ObjString *copy_string(const char *chars, int length);
 
-void printObject(Value value);
+void print_object(Value value);
 
 static inline bool isObjType(Value value, ObjType type)
 {

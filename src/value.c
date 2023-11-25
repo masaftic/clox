@@ -6,20 +6,20 @@
 #include "object.h"
 
 
-void initValueArray(ValueArray *array)
+void init_value_array(ValueArray *array)
 {
     array->capacity = 0;
     array->count = 0;
     array->values = NULL;
 }
 
-void freeValueArray(ValueArray *array)
+void free_value_array(ValueArray *array)
 {
     FREE_ARRAY(Value, array->values, array->capacity);
-    initValueArray(array);
+    init_value_array(array);
 }
 
-void writeValueArray(ValueArray *array, Value value)
+void write_value_array(ValueArray *array, Value value)
 {
     if (array->count + 1 > array->capacity) {
         int oldCapacity = array->capacity;
@@ -31,7 +31,7 @@ void writeValueArray(ValueArray *array, Value value)
     array->count++;
 }
 
-void printValue(Value value)
+void print_value(Value value)
 {
     switch (value.type)
     {
@@ -45,12 +45,12 @@ void printValue(Value value)
         printf("%g", AS_NUMBER(value));
         break;
     case VAL_OBJ:
-        printObject(value);
+        print_object(value);
         break;
     }
 }
 
-bool valuesEqual(Value a, Value b)
+bool values_equal(Value a, Value b)
 {
     if (a.type != b.type) return false;
 

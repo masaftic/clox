@@ -16,7 +16,7 @@ static void resetStack()
     vm.stackTop = vm.stack;
 }
 
-static void runtimeError(const char *format, ...)
+static void runtime_error(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -30,19 +30,19 @@ static void runtimeError(const char *format, ...)
     resetStack();
 }
 
-void initVM()
+void init_VM()
 {
     resetStack();
     vm.objects = NULL;
-    initTable(&vm.strings);
-    initTable(&vm.globals);
+    init_table(&vm.strings);
+    init_table(&vm.globals);
 }
 
-void freeVM()
+void free_VM()
 {
-    freeTable(&vm.strings);
-    freeTable(&vm.globals);
-    freeObjects();
+    free_table(&vm.strings);
+    free_table(&vm.globals);
+    free_objects();
 }
 
 void push(Value value)
@@ -62,7 +62,7 @@ static Value peek(int distance)
     return vm.stackTop[-(1 + distance)];
 }
 
-static bool isFalsey(Value value)
+static bool is_falsey(Value value)
 {
     return IS_NIL(value) || (IS_BOOL(value) && !AS_BOOL(value));
 }
@@ -78,7 +78,7 @@ static void concatenate()
     memcpy(chars + a->length, b->chars, b->length);
     chars[length] = '\0';
 
-    ObjString *result = takeString(chars, length);
+    ObjString *result = take_string(chars, length);
     push(OBJ_VAL(result));
 }
 
@@ -90,7 +90,7 @@ static InterpretResult run()
 #define BINARY_OP(valueType, op) \
     do { \
         if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
-            runtimeError("Operands must be numbers."); \
+            runtime_error("Operands must be numbers."); \
             return INTERPRET_RUNTIME_ERROR; \
         } \
         double b = AS_NUMBER(pop()); \
@@ -105,12 +105,12 @@ static InterpretResult run()
         printf("          ");
         for (Value *slot = vm.stack; slot < vm.stackTop; slot++) {
             printf("[ ");
-            printValue(*slot);
+            print_value(*slot);
             printf(" ]");
         }
         printf("\n");
 
-        disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
+        disassemble_instruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
 #endif
 
 
@@ -137,7 +137,7 @@ static InterpretResult run()
         case OP_EQUAL: {
             Value b = pop();
             Value a = pop();
-            push(BOOL_VAL(valuesEqual(a, b)));
+            push(BOOL_VAL(values_equal(a, b)));
             break;
         }
         case OP_GREATER:
@@ -157,7 +157,7 @@ static InterpretResult run()
                 push(NUMBER_VAL(a + b));
             }
             else {
-                runtimeError("Operands must be two numbers or two strings.");
+                runtime_error("Operands must be two numbers or two strings.");
                 return INTERPRET_RUNTIME_ERROR;
             }
             break;
@@ -173,12 +173,12 @@ static InterpretResult run()
             break;
 
         case OP_NOT:
-            push(BOOL_VAL(isFalsey(pop())));
+            push(BOOL_VAL(is_falsey(pop())));
             break;
 
         case OP_NEGATE: {
             if (!IS_NUMBER(peek(0))) {
-                runtimeError("Operand must be a number.");
+                runtime_error("Operand must be a number.");
                 return INTERPRET_RUNTIME_ERROR;
             }
             push(NUMBER_VAL(-AS_NUMBER(pop())));
@@ -186,7 +186,7 @@ static InterpretResult run()
         }
 
         case OP_PRINT: {
-            printValue(pop());
+            print_value(pop());
             printf("\n");
             break;
         }
@@ -198,7 +198,7 @@ static InterpretResult run()
 
         case OP_DEFINE_GLOBAL: {
             ObjString *name = READ_STRING();
-            tableSet(&vm.globals, name, peek(0));
+            table_set(&vm.globals, name, peek(0));
             pop();
             break;
         }
@@ -206,8 +206,8 @@ static InterpretResult run()
         case OP_GET_GLOBAL: {
             ObjString* name = READ_STRING();
             Value value;
-            if (!tableGet(&vm.globals, name, &value)) {
-                runtimeError("Undefined variable '%s'.");
+            if (!table_get(&vm.globals, name, &value)) {
+                runtime_error("Undefined variable '%s'.");
                 return INTERPRET_RUNTIME_ERROR;
             }
             push(value);
@@ -233,10 +233,10 @@ static InterpretResult run()
 InterpretResult interpret(const char *source)
 {
     Chunk chunk;
-    initChuck(&chunk);
+    init_chuck(&chunk);
 
     if (!compile(source, &chunk)) {
-        freeChunk(&chunk);
+        free_chunk(&chunk);
         return INTERPRET_COMPILE_ERROR;
     }
 
@@ -245,7 +245,7 @@ InterpretResult interpret(const char *source)
 
     InterpretResult result = run();
 
-    freeChunk(&chunk);
+    free_chunk(&chunk);
     return result;
 }
 

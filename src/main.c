@@ -25,7 +25,7 @@ static void repl()
     }
 }
 
-static char *readFile(const char *path) 
+static char *read_file(const char *path) 
 {
     char *buffer = NULL;
     FILE *file = fopen(path, "rb");
@@ -75,9 +75,9 @@ error:
 
 
 
-static void runFile(const char *path) 
+static void run_file(const char *path) 
 {
-    char *source = readFile(path);
+    char *source = read_file(path);
     InterpretResult result = interpret(source);
     free(source);
 
@@ -88,11 +88,11 @@ static void runFile(const char *path)
 
 int main(int argc, const char* argv[])
 {
-    initVM();
+    init_VM();
 
 #ifdef DEBUG_LOCAL_DEBUGGER
     const char *path = "/home/masaftic/dev/clox/clox.txt";
-    runFile(path);
+    run_file(path);
     return 0;
 #endif
     
@@ -100,13 +100,13 @@ int main(int argc, const char* argv[])
         repl();
     } 
     else if (argc == 2) {
-        runFile(argv[1]);
+        run_file(argv[1]);
     } 
     else {
         fprintf(stderr, "Usage: clox [path]\n");
         exit(64);
     }
 
-    freeVM();
+    free_VM();
     return 0;
 }

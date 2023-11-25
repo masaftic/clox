@@ -14,7 +14,7 @@ typedef struct {
 
 Scanner scanner;
 
-static bool isAtEnd() 
+static bool is_at_end() 
 {
     return *scanner.current == '\0';
 }
@@ -32,19 +32,19 @@ static char peek()
 
 static char peekNext() 
 {
-    if (isAtEnd()) return '\0';
+    if (is_at_end()) return '\0';
     return scanner.current[1];
 }
 
 static bool match(char expected) 
 {
-    if (isAtEnd()) return false;
+    if (is_at_end()) return false;
     if (*scanner.current != expected) return false;
     scanner.current++;
     return true;
 }
 
-static Token makeToken(TokenType type) 
+static Token make_token(TokenType type) 
 {
     Token token;
     token.type = type;
@@ -54,7 +54,7 @@ static Token makeToken(TokenType type)
     return token;
 }
 
-static Token errorToken(const char * message) 
+static Token error_token(const char * message) 
 {
     Token token;
     token.type = TOKEN_ERROR;
@@ -64,7 +64,7 @@ static Token errorToken(const char * message)
     return token;
 }
 
-static void skipWhitespace() 
+static void skip_whitespace() 
 {
     for (;;) {
         char c = peek();
@@ -80,7 +80,7 @@ static void skipWhitespace()
             break;
         case '/':
             if (peekNext() == '/') {
-                while (peek() != '\n' && !isAtEnd()) advance();
+                while (peek() != '\n' && !is_at_end()) advance();
             } else {
                 return;
             }
@@ -90,14 +90,14 @@ static void skipWhitespace()
     }
 }
 
-static bool isAlpha(char c) 
+static bool is_alpha(char c) 
 {
     return (c >= 'a' && c <= 'z') ||
         (c >= 'A' && c <= 'Z') ||
         c == '_';
 }
 
-static bool isDigit(char c) 
+static bool is_digit(char c) 
 {
     return c >= '0' && c <= '9';
 }
@@ -168,24 +168,24 @@ static TokenType identifierType()
 
 static Token identifier() 
 {
-    while (isAlpha(peek()) || isDigit(peek())) advance();
-    return makeToken(identifierType());
+    while (is_alpha(peek()) || is_digit(peek())) advance();
+    return make_token(identifierType());
 }
 
 static Token string() 
 {
-    while (peek() != '"' && !isAtEnd()) {
+    while (peek() != '"' && !is_at_end()) {
         if (peek() == '\n') scanner.line++;
         advance();
     }
 
-    if (isAtEnd()) return errorToken("Unterminated string.");
+    if (is_at_end()) return error_token("Unterminated string.");
 
     advance();
-    return makeToken(TOKEN_STRING);
+    return make_token(TOKEN_STRING);
 }
 
-void initScanner(const char * source) 
+void init_scanner(const char * source) 
 {
     scanner.start = source;
     scanner.current = source;
@@ -194,65 +194,65 @@ void initScanner(const char * source)
 
 static Token number() 
 {
-    while (isDigit(peek())) advance();
+    while (is_digit(peek())) advance();
 
     // Look for a fractional part.
-    if (peek() == '.' && isDigit(peekNext())) {
+    if (peek() == '.' && is_digit(peekNext())) {
         // Consume the ".".
         advance();
 
-        while (isDigit(peek())) advance();
+        while (is_digit(peek())) advance();
     }
 
-    return makeToken(TOKEN_NUMBER);
+    return make_token(TOKEN_NUMBER);
 }
 
-Token scanToken() 
+Token scan_token() 
 {
-    skipWhitespace();
+    skip_whitespace();
     scanner.start = scanner.current;
 
-    if (isAtEnd()) return makeToken(TOKEN_EOF);
+    if (is_at_end()) return make_token(TOKEN_EOF);
 
     char c = advance();
 
-    if (isAlpha(c)) return identifier();
-    if (isDigit(c)) return number();
+    if (is_alpha(c)) return identifier();
+    if (is_digit(c)) return number();
 
     switch (c) {
     case '(':
-        return makeToken(TOKEN_LEFT_PAREN);
+        return make_token(TOKEN_LEFT_PAREN);
     case ')':
-        return makeToken(TOKEN_RIGHT_PAREN);
+        return make_token(TOKEN_RIGHT_PAREN);
     case '{':
-        return makeToken(TOKEN_LEFT_BRACE);
+        return make_token(TOKEN_LEFT_BRACE);
     case '}':
-        return makeToken(TOKEN_RIGHT_BRACE);
+        return make_token(TOKEN_RIGHT_BRACE);
     case ';':
-        return makeToken(TOKEN_SEMICOLON);
+        return make_token(TOKEN_SEMICOLON);
     case ',':
-        return makeToken(TOKEN_COMMA);
+        return make_token(TOKEN_COMMA);
     case '.':
-        return makeToken(TOKEN_DOT);
+        return make_token(TOKEN_DOT);
     case '-':
-        return makeToken(TOKEN_MINUS);
+        return make_token(TOKEN_MINUS);
     case '+':
-        return makeToken(TOKEN_PLUS);
+        return make_token(TOKEN_PLUS);
     case '/':
-        return makeToken(TOKEN_SLASH);
+        return make_token(TOKEN_SLASH);
     case '*':
-        return makeToken(TOKEN_STAR);
+        return make_token(TOKEN_STAR);
     case '!':
-        return makeToken(match('=') ? TOKEN_BANG_EQUAL : TOKEN_BANG);
+        return make_token(match('=') ? TOKEN_BANG_EQUAL : TOKEN_BANG);
     case '=':
-        return makeToken(match('=') ? TOKEN_EQUAL_EQUAL : TOKEN_EQUAL);
+        return make_token(match('=') ? TOKEN_EQUAL_EQUAL : TOKEN_EQUAL);
     case '<':
-        return makeToken(match('=') ? TOKEN_LESS_EQUAL : TOKEN_LESS);
+        return make_token(match('=') ? TOKEN_LESS_EQUAL : TOKEN_LESS);
     case '>':
-        return makeToken(match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
+        return make_token(match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
     case '"':
         return string();
     }
 
-    return errorToken("Unexpected character.");
+    return error_token("Unexpected character.");
 }

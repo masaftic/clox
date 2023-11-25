@@ -3,24 +3,24 @@
 #include "chunk.h"
 #include "memory.h"
 
-void initChuck(Chunk *chuck)
+void init_chuck(Chunk *chuck)
 {
     chuck->count = 0;
     chuck->capacity = 0;
     chuck->code = NULL;
     chuck->lines = NULL;
-    initValueArray(&chuck->constants);
+    init_value_array(&chuck->constants);
 }
 
-void freeChunk(Chunk *chunk)
+void free_chunk(Chunk *chunk)
 {
     FREE_ARRAY(uint8_t, chunk->code, chunk->capacity);
     FREE_ARRAY(int, chunk->lines, chunk->capacity);
-    freeValueArray(&chunk->constants);
-    initChuck(chunk);
+    free_value_array(&chunk->constants);
+    init_chuck(chunk);
 }
 
-void writeChunk(Chunk *chunk, uint8_t byte, int line)
+void write_chunk(Chunk *chunk, uint8_t byte, int line)
 {
     if (chunk->count + 1 > chunk->capacity) {
         int oldCapacity = chunk->capacity;
@@ -36,8 +36,8 @@ void writeChunk(Chunk *chunk, uint8_t byte, int line)
     chunk->count++;
 }
 
-int addConstant(Chunk *chunk, Value value)
+int add_constant(Chunk *chunk, Value value)
 {
-    writeValueArray(&chunk->constants, value);
+    write_value_array(&chunk->constants, value);
     return chunk->constants.count - 1;
 }
